@@ -1,0 +1,164 @@
+﻿@model List<IshReja>
+
+<style>
+
+    body {
+        background: #f4f7fb;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .custom-card {
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border: none;
+        transition: 0.3s;
+    }
+
+        .custom-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .custom-header {
+        background: linear-gradient(90deg,#0d6efd,#0dcaf0);
+        color: white;
+        border-radius: 18px 18px 0 0;
+        padding: 18px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .table {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .table thead {
+            background: linear-gradient(90deg,#6610f2,#0dcaf0);
+            color: white;
+        }
+
+        .table tbody tr {
+            transition: 0.25s;
+        }
+
+            .table tbody tr:hover {
+                background: #eef5ff;
+                transform: scale(1.01);
+            }
+
+    .badge-info {
+        background: linear-gradient(90deg,#0dcaf0,#0d6efd);
+        color: white;
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .badge-date {
+        background: #e3f2fd;
+        color: #0d6efd;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .count-box {
+        background: rgba(255,255,255,0.2);
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+
+    .empty-text {
+        text-align: center;
+        padding: 40px;
+        color: #999;
+        font-size: 17px;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+</style>
+
+
+<section class="content mt-3 fade-in">
+    <div class="container-fluid">
+
+        <div class="card custom-card">
+
+            <div class="custom-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="fa fa-calendar mr-2"></i> Mening ish rejam
+                </h4>
+
+                <span class="count-box">
+                    Jami: @Model.Count ta
+                </span>
+            </div>
+
+            <div class="card-body table-responsive">
+
+                @if (Model != null && Model.Count > 0)
+                {
+                    <table class="table table-hover table-bordered align-middle text-center">
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nomi</th>
+                                <th>Fan</th>
+                                <th>Guruh</th>
+                                <th>Tavsif</th>
+                                <th>Sana</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td><strong>@(i + 1)</strong></td>
+
+                                    <td>@Model[i].Nomi</td>
+
+                                    <td>
+                                        <span class="badge-info">
+                                            @Model[i].FanNomi
+                                        </span>
+                                    </td>
+
+                                    <td>@Model[i].Guruh</td>
+
+                                    <td>
+                                        <span style="color:#555">
+                                            @Model[i].Tavsif
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge-date">
+                                            @Model[i].Sana.ToString("dd.MM.yyyy")
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                }
+                else
+                {
+                    <div class="empty-text">
+                        <i class="fa fa-folder-open"></i><br />
+                        Ish reja mavjud emas
+                    </div>
+                }
+
+            </div>
+        </div>
+
+    </div>
+</section>

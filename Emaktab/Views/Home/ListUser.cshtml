@@ -1,0 +1,120 @@
+﻿@model List<User>
+@using Microsoft.AspNetCore.Html
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="~/assets/vendor_components/font-awesome/css/font-awesome.min.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/vendor_components/bootstrap/dist/css/bootstrap.css" asp-append-version="true">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<div class="container-fluid mt-4">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+            <h4 class="mb-0"><i class="bi bi-people-fill me-2"></i>Foydalanuvchilar</h4>
+            <a asp-action="CreateUser" class="btn btn-light btn-sm text-primary fw-bold shadow-sm">
+                <i class="bi bi-person-plus-fill me-1"></i> Yangi foydalanuvchi
+            </a>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover align-middle shadow-sm">
+                <thead class="table-light">
+                    <tr class="text-center">
+                        <th style="width: 5%;">№</th>
+                        <th style="width: 20%;">F.I.Sh.</th>
+                        <th style="width: 15%;">Login</th>
+                        <th style="width: 20%;">Email</th>
+                        <th style="width: 15%;">Darajasi</th>
+                        <th style="width: 10%;">Holati</th>
+                        <th style="width: 15%;">Yaratilgan sana</th>
+                        <th style="width: 20%;">Harakatlar</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align:center">
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@user.Id</td>
+                            <td>@user.user_fio</td>
+                            <td>@user.user_login</td>
+                            <td>@user.user_email</td>
+                            <td>@user.user_level</td>
+                            <td class="text-center">
+                                @if (user.active)
+                                {
+                                    <span class="badge bg-success rounded-pill px-3 py-2">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Faol
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger rounded-pill px-3 py-2">
+                                        <i class="bi bi-x-circle-fill me-1"></i> Nofaol
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-center">@user.create_date.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-items-1 ">
+                                    <a asp-action="DetailsUser" asp-route-Id="@user.Id" class="btn btn-sm btn-info text-white shadow-sm" title="Ko‘rish">
+                                        <i class="bi bi-eye-fill fs-5"></i>
+                                    </a>
+
+                                    <a asp-action="EditUser" asp-route-Id="@user.Id" class="btn btn-sm btn-primary shadow-sm" title="Tahrirlash">
+                                        <i class="bi bi-pencil-fill fs-5"></i>
+                                    </a>
+
+                                    <form asp-action="DeleteUser" method="post" class="d-inline">
+                                        <input type="hidden" name="Id" value="@user.Id" />
+                                        <button type="submit" class="btn btn-sm btn-danger shadow-sm" title="O‘chirish">
+                                            <i class="bi bi-trash-fill fs-5"></i>
+                                        </button>
+                                    </form>
+
+                                    <form asp-action="ToggleUserStatus" method="post" class="d-inline">
+                                        <input type="hidden" name="Id" value="@user.Id" />
+                                        <input type="hidden" name="active" value="@(!user.active)" />
+                                        <button type="submit" class="btn btn-sm btn-warning shadow-sm" title="Holatini o‘zgartirish">
+                                            <i class="bi bi-shuffle fs-5"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (TempData["successMessage"] != null)
+{
+    <div id="success-alert" class="alert alert-success alert-dismissible fade show mt-3 shadow" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>@TempData["successMessage"]
+    </div>
+}
+@if (TempData["errorMessage"] != null)
+{
+    <div id="error-alert" class="alert alert-danger alert-dismissible fade show mt-3 shadow" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["errorMessage"]
+    </div>
+}
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            const success = document.getElementById('success-alert');
+            if (success) {
+                success.classList.remove('show');
+                success.classList.add('fade');
+                setTimeout(() => success.remove(), 500);
+            }
+
+            const error = document.getElementById('error-alert');
+            if (error) {
+                error.classList.remove('show');
+                error.classList.add('fade');
+                setTimeout(() => error.remove(), 500);
+            }
+        }, 3000);
+    </script>
+}

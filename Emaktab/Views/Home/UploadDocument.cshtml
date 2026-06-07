@@ -1,0 +1,54 @@
+﻿@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["Success"]</div>
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="~/assets/vendor_components/font-awesome/css/font-awesome.min.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/vendor_components/bootstrap/dist/css/bootstrap.css" asp-append-version="true">
+
+<div class="accordion" id="categoryAccordion">
+    @foreach (var category in Model.Categories)
+    {
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="heading@category.Id">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@category.Id">
+                    @category.Title
+                </button>
+            </h2>
+            <div id="collapse@category.Id" class="accordion-collapse collapse" data-bs-parent="#categoryAccordion">
+                <div class="accordion-body">
+                    <form asp-action="UploadDocument" asp-controller="Document" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="categoryId" value="@category.Id" />
+
+                        <div class="mb-3">
+                            <label for="description@category.Id" class="form-label">Izoh</label>
+                            <input type="text" class="form-control" name="description" id="description@category.Id" placeholder="Masalan: Hujjat haqida izoh" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="file@category.Id" class="form-label">Faylni tanlang</label>
+                            <input type="file" class="form-control" name="file" id="file@category.Id" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Yuklash</button>
+                    </form>
+
+                    <hr />
+                    <strong>Yuklangan hujjatlar:</strong>
+                    <ul class="list-group mt-2">
+                        @foreach (var doc in category.Documents)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                @doc.Description
+                                <a class="btn btn-sm btn-outline-secondary" href="@doc.FilePath" target="_blank">Ko‘rish</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+</div>

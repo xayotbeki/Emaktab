@@ -1,0 +1,140 @@
+﻿@model Blog
+
+@{
+    ViewData["Title"] = "Blog tafsilotlari";
+}
+
+<style>
+    .blog-card {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: 0.3s;
+    }
+
+        .blog-card:hover {
+            transform: translateY(-4px);
+        }
+
+    .blog-header {
+        background: linear-gradient(135deg, #1a3a6c, #2196F3);
+        color: white;
+        padding: 15px 20px;
+    }
+
+    .btn-back {
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+
+        .btn-back:hover {
+            transform: scale(1.05);
+        }
+
+    dt {
+        font-weight: 600;
+        color: #333;
+    }
+
+    dd {
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    .content-box {
+        background: #f9fbfd;
+        border-radius: 10px;
+        padding: 15px;
+        border: 1px solid #eee;
+        line-height: 1.6;
+    }
+
+    .badge {
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container-fluid mt-4 fade-in">
+    <div class="card blog-card">
+
+        <div class="blog-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="fa fa-file-text"></i> Blog tafsilotlari
+            </h5>
+
+            <a asp-action="ListBlog" asp-controller="Home"
+               class="btn btn-light btn-sm btn-back">
+                <i class="fa fa-arrow-left"></i> Orqaga
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            <dl class="row">
+
+                <dt class="col-sm-3">Til</dt>
+                <dd class="col-sm-9">@Model.LanguageType</dd>
+
+                <dt class="col-sm-3">Mavzu</dt>
+                <dd class="col-sm-9"><b>@Model.Title</b></dd>
+
+                <dt class="col-sm-3">Qisqa izoh</dt>
+                <dd class="col-sm-9">@Model.Description</dd>
+
+                <dt class="col-sm-3">Yaratilgan sana</dt>
+                <dd class="col-sm-9">@Model.CreateDate.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-3">Holati</dt>
+                <dd class="col-sm-9">
+                    @if (Model.StatusId == (int)DocStatus.Saqlangan)
+                    {
+                        <span class="badge bg-secondary">Saqlangan</span>
+                    }
+                    else if (Model.StatusId == (int)DocStatus.Yuborilgan)
+                    {
+                        <span class="badge bg-primary">Yuborilgan</span>
+                    }
+                    else if (Model.StatusId == (int)DocStatus.QabulQilindi)
+                    {
+                        <span class="badge bg-success">Qabul qilindi</span>
+                    }
+                    else if (Model.StatusId == (int)DocStatus.Qaytarildi)
+                    {
+                        <span class="badge bg-danger">Qaytarildi</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Noma'lum</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">Kontent</dt>
+                <dd class="col-sm-9">
+                    <div class="content-box">
+                        @Html.Raw(Model.Comment)
+                    </div>
+                </dd>
+
+            </dl>
+
+        </div>
+    </div>
+</div>

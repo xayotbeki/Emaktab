@@ -1,0 +1,71 @@
+﻿@model Blog
+
+@{
+    ViewData["Title"] = "Blog tahrirlash";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css">
+
+<div class="container-fluid mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-white">
+            <h5 class="mb-0">Blog tahrirlash</h5>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="EditBlog" asp-controller="Home" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CreateDate" />
+                <input type="hidden" asp-for="StatusId" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="LanguageType" class="form-label">Til</label>
+                    <select asp-for="LanguageType" class="form-control" asp-items="Html.GetEnumSelectList<LanguageType>()"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Mavzu</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Qisqa izoh</label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Comment" class="form-label">Kontent</label>
+                    <textarea asp-for="Comment" id="editor" class="form-control"></textarea>
+                    <span asp-validation-for="Comment" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Yangilash</button>
+                <a asp-action="ListBlog" asp-controller="Home" class="btn btn-danger">Orqaga</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#editor').summernote({
+            height: 250,
+            placeholder: 'Blog kontentini kiriting...',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['fontsize', 'color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview']]
+            ]
+        });
+    });
+</script>

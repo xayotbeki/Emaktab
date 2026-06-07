@@ -1,0 +1,153 @@
+﻿@model List<User>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Foydalanuvchilar";
+}
+
+<style>
+    .page-card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .page-header {
+        background: linear-gradient(90deg,#0d6efd,#0dcaf0);
+        color: white;
+        border-radius: 15px 15px 0 0;
+        padding: 15px 20px;
+    }
+
+    .table thead {
+        background-color: #1a3a6c;
+        color: white;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f2f6fc;
+        transition: 0.2s;
+    }
+
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: #0d6efd;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin: auto;
+    }
+
+    .badge-role {
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+
+    <div class="card page-card">
+
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">👥 Foydalanuvchilar ro‘yxati</h4>
+
+            <a asp-action="Index1" asp-controller="Home"
+               class="btn btn-light btn-sm fw-bold">
+                ⬅ Orqaga
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            <p class="text-muted mb-3">
+                Tizimdagi barcha foydalanuvchilarni boshqarish
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle text-center">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th></th>
+                            <th>F.I.O</th>
+                            <th>Login</th>
+                            <th>Role</th>
+                            <th>Holat</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            int i = 1;
+                            foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+
+                                    <td>
+                                        <div class="user-avatar">
+                                            @user.user_fio.Substring(0, 1)
+                                        </div>
+                                    </td>
+
+                                    <td class="fw-semibold">@user.user_fio</td>
+                                    <td>@user.user_login</td>
+
+                                    <td>
+                                        @switch (user.UsertType)
+                                        {
+                                            case UsertType.SuperAdmin:
+                                                <span class="badge bg-danger badge-role">SuperAdmin</span>
+                                                break;
+
+                                            case UsertType.Admin:
+                                                <span class="badge bg-primary badge-role">Admin</span>
+                                                break;
+
+                                            case UsertType.Pedagok:
+                                                <span class="badge bg-success badge-role">Pedagog</span>
+                                                break;
+
+                                            case UsertType.Librarian:
+                                                <span class="badge bg-warning text-dark badge-role">Librarian</span>
+                                                break;
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-success badge-role">
+                                            <i class="fa fa-check-circle"></i> Active
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="fa fa-info-circle"></i> Foydalanuvchilar topilmadi
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

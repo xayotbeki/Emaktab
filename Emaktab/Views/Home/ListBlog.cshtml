@@ -1,0 +1,233 @@
+﻿@using Microsoft.AspNetCore.Html
+@model List<Blog>
+
+@{
+    ViewData["Title"] = "Ilmiy faoliyat";
+}
+
+<style>
+    .custom-card {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: 0.3s;
+    }
+
+        .custom-card:hover {
+            transform: translateY(-4px);
+        }
+
+    .custom-header {
+        background: linear-gradient(135deg, #1a3a6c, #2196F3);
+        color: white;
+        padding: 15px 20px;
+    }
+
+    .btn-custom {
+        border-radius: 8px;
+        transition: 0.3s;
+        font-weight: 500;
+    }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+        }
+
+    .custom-table thead {
+        background: #f1f5f9;
+    }
+
+    .custom-table th {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .custom-table tbody tr {
+        transition: 0.2s;
+    }
+
+        .custom-table tbody tr:hover {
+            background: #f9fbfd;
+            transform: scale(1.01);
+        }
+
+    .badge {
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+    .action-btn {
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container-fluid mt-4 fade-in">
+    <div class="card custom-card">
+
+        <div class="custom-header d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="fa fa-bar-chart"></i> Ilmiy faoliyat
+            </h4>
+
+            <a asp-action="CreateBlog" asp-controller="Home"
+               class="btn btn-light btn-sm text-primary fw-bold shadow-sm btn-custom">
+                <i class="fa fa-plus-circle"></i> Yangi blog
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            @if (TempData["successMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["successMessage"]
+                </div>
+            }
+
+            @if (TempData["errorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["errorMessage"]
+                </div>
+            }
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle custom-table">
+
+                    <thead>
+                        <tr class="text-center">
+                            <th>№</th>
+                            <th>Mavzu</th>
+                            <th>Qisqa mazmun</th>
+                            <th>Til</th>
+                            <th>Sana</th>
+                            <th>Holati</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                var item = Model[i];
+
+                                <tr class="text-center">
+                                    <td>@(i + 1)</td>
+
+                                    <td><b>@item.Title</b></td>
+
+                                    <td style="max-width:250px;">
+                                        @{
+                                            var text = item.Description ?? "";
+                                            if (text.Length > 60)
+                                            {
+                                                text = text.Substring(0, 60) + "...";
+                                            }
+                                        }
+                                        @text
+                                    </td>
+
+                                    <td>@item.LanguageType</td>
+
+                                    <td>@item.CreateDate.ToString("dd.MM.yyyy")</td>
+
+                                    <td>
+                                        @if (item.StatusId == (int)DocStatus.Saqlangan)
+                                        {
+                                            <span class="badge bg-secondary">Saqlangan</span>
+                                        }
+                                        else if (item.StatusId == (int)DocStatus.Yuborilgan)
+                                        {
+                                            <span class="badge bg-primary">Yuborilgan</span>
+                                        }
+                                        else if (item.StatusId == (int)DocStatus.QabulQilindi)
+                                        {
+                                            <span class="badge bg-success">Qabul qilindi</span>
+                                        }
+                                        else if (item.StatusId == (int)DocStatus.Qaytarildi)
+                                        {
+                                            <span class="badge bg-danger">Qaytarildi</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Noma'lum</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                            <a asp-action="DetailsBlog" asp-route-id="@item.Id"
+                                               class="btn btn-info btn-sm action-btn">
+                                                Ko‘rish
+                                            </a>
+
+                                            @if (item.StatusId == (int)DocStatus.Saqlangan)
+                                            {
+                                                <a asp-action="EditBlog" asp-route-blogId="@item.Id"
+                                                   class="btn btn-warning btn-sm text-white action-btn">
+                                                    Tahrirlash
+                                                </a>
+
+                                                <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="docId" value="@item.Id" />
+                                                    <input type="hidden" name="statusId" value="@((int)DocStatus.Yuborilgan)" />
+                                                    <button type="submit" class="btn btn-primary btn-sm action-btn">
+                                                        Yuborish
+                                                    </button>
+                                                </form>
+
+                                                <a asp-action="DeleteBlog" asp-route-id="@item.Id"
+                                                   class="btn btn-danger btn-sm action-btn"
+                                                   onclick="return confirm('Haqiqatan ham o‘chirmoqchimisiz?');">
+                                                    O‘chirish
+                                                </a>
+                                            }
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center">
+                                    <i class="fa fa-info-circle"></i> Bloglar topilmadi
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,221 @@
+﻿@model List<Document100>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Admin - Fayllarni tekshirish";
+}
+
+<style>
+    .card-custom {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+    }
+
+    .card-header-custom {
+        background: linear-gradient(90deg, #1a3a6c, #0d6efd);
+        color: white;
+        border-radius: 18px 18px 0 0;
+        padding: 16px 20px;
+    }
+
+    .table thead {
+        background: #1a3a6c;
+        color: white;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f2f6ff;
+    }
+
+    .btn-sm {
+        border-radius: 8px;
+        padding: 5px 12px;
+    }
+
+    .score-input {
+        width: 70px;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .badge {
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+
+    .status-closed {
+        opacity: 1;
+    }
+
+        .status-closed form,
+        .status-closed button,
+        .status-closed input {
+            pointer-events: none;
+        }
+
+        .status-closed input {
+            background-color: #e9ecef;
+        }
+
+    .action-disabled {
+        color: #999;
+        font-size: 13px;
+        font-style: italic;
+    }
+
+    .file-btn {
+        white-space: nowrap;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+
+    <div class="card card-custom">
+
+        <div class="card-header card-header-custom">
+            <h4 class="mb-0">📂 Fayllarni tekshirish (Admin)</h4>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle text-center">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>F.I.O</th>
+                            <th>Izoh</th>
+                            <th>Fayl</th>
+                            <th>Status</th>
+                            <th>Ball</th>
+                            <th>Sana</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var isClosed = item.status_id == (int)DocStatus.QabulQilindi
+                            || item.status_id == (int)DocStatus.Qaytarildi;
+
+                            <tr class="@(isClosed ? "status-closed" : "")">
+
+                                <td>@item.Id</td>
+
+                                <td class="fw-semibold">
+                                    @(item.User != null ? item.User.user_fio : "Noma'lum")
+                                </td>
+
+                                <td>@item.Comment</td>
+
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.FilePath))
+                                    {
+                                        <a href="@item.FilePath"
+                                           target="_blank"
+                                           class="btn btn-primary btn-sm file-btn">
+                                            📥 Yuklash
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Fayl yo‘q</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (item.status_id == (int)DocStatus.Saqlangan)
+                                    {
+                                        <span class="badge bg-secondary">Saqlangan</span>
+                                    }
+                                    else if (item.status_id == (int)DocStatus.Yuborilgan)
+                                    {
+                                        <span class="badge bg-primary">Yuborilgan</span>
+                                    }
+                                    else if (item.status_id == (int)DocStatus.QabulQilindi)
+                                    {
+                                        <span class="badge bg-success">Qabul qilingan</span>
+                                    }
+                                    else if (item.status_id == (int)DocStatus.Qaytarildi)
+                                    {
+                                        <span class="badge bg-danger">Rad etilgan</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (item.status_id == (int)DocStatus.Yuborilgan)
+                                    {
+                                        <form asp-action="UpdateDocStatus" method="post" class="d-flex justify-content-center gap-1">
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <input type="hidden" name="statusId" value="@((int)DocStatus.Saqlangan)" />
+
+                                            <input type="number"
+                                                   name="score"
+                                                   value="@item.Score"
+                                                   class="form-control form-control-sm score-input" />
+
+                                            <button class="btn btn-success btn-sm">✔</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="fw-bold">@item.Score</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @item.upload_date.ToString("dd.MM.yyyy")
+                                </td>
+
+                                <td>
+                                    @if (item.status_id == (int)DocStatus.Saqlangan)
+                                    {
+                                        <div class="d-flex justify-content-center gap-2">
+
+                                            <form asp-action="UpdateDocStatus" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="statusId" value="@((int)DocStatus.QabulQilindi)" />
+                                                <input type="hidden" name="score" value="@item.Score" />
+
+                                                <button class="btn btn-success btn-sm">✔</button>
+                                            </form>
+
+                                            <form asp-action="UpdateDocStatus" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="statusId" value="@((int)DocStatus.Qaytarildi)" />
+                                                <input type="hidden" name="score" value="@item.Score" />
+
+                                                <button class="btn btn-danger btn-sm">✖</button>
+                                            </form>
+
+                                        </div>
+                                    }
+                                    else if (isClosed)
+                                    {
+                                        <span class="action-disabled">Yakunlangan</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

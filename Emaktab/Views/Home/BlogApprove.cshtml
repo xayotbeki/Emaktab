@@ -1,0 +1,192 @@
+﻿@model List<Blog>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Bloglarni tasdiqlash";
+}
+
+<style>
+    .card-custom {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .card-header-custom {
+        background: linear-gradient(90deg, #1a3a6c, #0d6efd);
+        color: white;
+        border-radius: 16px 16px 0 0;
+        padding: 15px 20px;
+    }
+
+    .table thead {
+        background-color: #1a3a6c;
+        color: white;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f4f8ff;
+        transition: 0.2s;
+    }
+
+    .btn-sm {
+        border-radius: 8px;
+        padding: 5px 12px;
+    }
+
+    .text-truncate-custom {
+        max-width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .alert {
+        border-radius: 10px;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+
+    <div class="card card-custom">
+
+        <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="fa fa-check-circle me-2"></i> Bloglarni tasdiqlash
+            </h4>
+
+            <a asp-action="Index1" asp-controller="Home" class="btn btn-light btn-sm">
+                ← Orqaga
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            @if (TempData["successMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["successMessage"]
+                </div>
+            }
+
+            @if (TempData["errorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["errorMessage"]
+                </div>
+            }
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle text-center">
+
+                    <thead>
+                        <tr>
+                            <th style="width:5%">№</th>
+                            <th style="width:15%">F.I.O</th>
+                            <th style="width:20%">Mavzu</th>
+                            <th style="width:25%">Qisqa mazmun</th>
+                            <th style="width:10%">Til</th>
+                            <th style="width:10%">Sana</th>
+                            <th style="width:15%">Amallar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            for (int i = 0; i < Model.Count; i++)
+                            {
+                                var item = Model[i];
+
+                                <tr>
+
+                                    <td>@(i + 1)</td>
+
+                                    <td class="fw-semibold">
+                                        @(item.User != null ? item.User.user_fio : "Noma'lum")
+                                    </td>
+
+                                    <td class="fw-bold text-primary">
+                                        @item.Title
+                                    </td>
+
+                                    <td class="text-truncate-custom">
+                                        @{
+                                            var text = item.Description ?? "";
+                                            if (text.Length > 60)
+                                            {
+                                                text = text.Substring(0, 60) + "...";
+                                            }
+                                        }
+                                @text
+                            </td>
+
+                            <td>
+                                <span class="badge bg-info text-dark">
+                                    @item.LanguageType
+                                </span>
+                            </td>
+
+                            <td>
+                                @(item.CreateDate != null
+                                                                ? item.CreateDate.ToString("dd.MM.yyyy")
+                                                                : "-")
+                            </td>
+
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                    @if (item.StatusId == (int)DocStatus.Yuborilgan)
+                                            {
+                                                <form asp-action="ApproveBlog" method="post">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+
+                                                    <button type="submit"
+                                                            class="btn btn-success btn-sm"
+                                                            onclick="return confirm('Tasdiqlaysizmi?')">
+                                                        ✔
+                                                    </button>
+                                                </form>
+
+                                                <form asp-action="RejectBlog" method="post">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+
+                                                    <button type="submit"
+                                                            class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Rad etilsinmi?')">
+                                                        ✖
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">
+                                                    Ko‘rib chiqilgan
+                                                </span>
+                                            }
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    Hozircha tasdiqlash uchun bloglar yo‘q
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

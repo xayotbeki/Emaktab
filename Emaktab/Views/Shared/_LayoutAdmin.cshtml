@@ -1,0 +1,1005 @@
+﻿﻿@{
+Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="KPI Tizimi Administrator">
+    <meta name="description" content="O'qituvchilar uchun KPI (Kalit Ko‘rsatkichlar Indikatori) nazorat tizimi">
+    <title>KPI Tizimi – hodimlar uchun nazorat paneli</title>
+    <link rel="icon" type="image/png" href="~/uploads/metrics.png">
+    <link rel="stylesheet" type="text/css" href="~/assets/vendor_components/font-awesome/css/font-awesome.css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="~/assets/vendor_components/font-awesome/css/font-awesome.min.css" asp-append-version="true">
+
+    <link rel="stylesheet" href="~/assets/vendor_components/bootstrap/dist/css/bootstrap.css" asp-append-version="true">
+
+    <link rel="stylesheet" href="~/css/bootstrap-extend.css" asp-append-version="true">
+
+    <link rel="stylesheet" type="text/css" href="~/assets/vendor_components/font-awesome/css/font-awesome.css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="~/assets/vendor_components/font-awesome/css/font-awesome.min.css" asp-append-version="true">
+
+    <link href="~/datetime/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/master_style.css" asp-append-version="true">
+
+    <link rel="stylesheet" href="~/css/skins/_all-skins.css" asp-append-version="true">
+
+    <link rel="stylesheet" type="text/css" href="~/css/loader.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/jquery-ui.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/jquery.dataTables.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/jquery-ui-timepicker-addon.min.css" asp-append-version="true">
+    <link href="~/assets/vendor_components/jquery-toast-plugin-master/dist/jquery.toast.min.css" asp-append-version="true" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/select2.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/multi-select-js/example-styles.css" asp-append-version="true" type="text/css">
+
+    <link href="~/assets/vendor_components/sweetalert/sweetalert.css" asp-append-version="true" rel="stylesheet" />
+    <link href="~/css/input_and_table_style.css" asp-append-version="true" rel="stylesheet" />
+
+    <link href="~/new_version_2/fonts/css2Font.css" asp-append-version="true" rel="stylesheet" type="text/css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <link href="~/new_version_2/vendor/bootstrap-icons/bootstrap-icons.css" asp-append-version="true" rel="stylesheet">
+
+    <link href="~/new_version_2/vendor/swiper/swiper-bundle.min.css" asp-append-version="true" rel="stylesheet">
+    <script src="~/new_version_2/vendor/swiper/swiper-bundle.min.js?v=1" asp-append-version="true"></script>
+
+
+
+    <style>
+        .ui-dialog {
+            z-index: 10100 !important;
+            background: #ffffff;
+        }
+
+        .ui-dialog-titlebar {
+            background-color: #ffffff;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            font-size: 20px;
+        }
+
+        .ui-widget-header {
+            border-width: 0 0 1px 0;
+        }
+
+        .ui-icon-closethick {
+            margin-top: -8px !important;
+            margin-left: -8px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane {
+            margin-top: 0px;
+            padding: 0px;
+        }
+
+        .ui-dialog .ui-dialog-titlebar-close {
+            width: 26px;
+            height: 26px;
+        }
+    </style>
+    <style>
+        #myInput, #myInputetsng, #myInputvagon {
+            box-sizing: border-box;
+            min-width: 230px;
+            font-size: 16px;
+            padding: 5px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f6f6f6;
+            min-width: 230px;
+            overflow: auto;
+            border: 1px solid #ddd;
+            z-index: 1;
+        }
+
+            .dropdown-content span {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+        .dropdown span:hover {
+            background-color: #ddd;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .scrollable-menu {
+            height: auto;
+            max-height: 300px;
+            overflow-x: hidden;
+        }
+    </style>
+    <style type="text/css">
+        @@media (max-width: 767px) and (min-width: 320px) {
+            .step {
+                font-size: 10px !important;
+            }
+        }
+
+        select.form-control:not([size]):not([multiple]) {
+            height: calc(1.7rem + 2px);
+        }
+
+        .ui-datepicker-calendar {
+            display: none;
+        }
+
+        #example tbody tr.selected {
+            background-color: #B0BED9
+        }
+
+        #example5 tbody tr.selected {
+            background-color: #B0BED9
+        }
+
+        #example6 tbody tr.selected {
+            background-color: #B0BED9
+        }
+
+        #confirmBox {
+            display: none;
+            background-color: #76ACD9;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+            position: fixed;
+            width: 400px;
+            left: 50%;
+            margin-left: -150px;
+            padding: 6px 8px 8px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+            #confirmBox button {
+                background-color: #ccc;
+                display: inline-block;
+                border-radius: 3px;
+                border: 1px solid #aaa;
+                padding: 2px;
+                text-align: center;
+                width: 80px;
+                cursor: pointer;
+            }
+
+                #confirmBox button:hover {
+                    background-color: #ddd;
+                }
+
+            #confirmBox .message {
+                text-align: left;
+                margin-bottom: 8px;
+            }
+
+        #msgBox {
+            display: none;
+            background-color: #76ACD9;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+            position: fixed;
+            width: 400px;
+            left: 50%;
+            margin-left: -150px;
+            padding: 6px 8px 8px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+            #msgBox button {
+                background-color: #ccc;
+                display: inline-block;
+                border-radius: 3px;
+                border: 1px solid #aaa;
+                padding: 2px;
+                text-align: center;
+                width: 80px;
+                cursor: pointer;
+            }
+
+                #msgBox button:hover {
+                    background-color: #ddd;
+                }
+
+            #msgBox .message {
+                text-align: left;
+                margin-bottom: 8px;
+            }
+
+        .tab {
+            display: none;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .progressbar {
+            margin: 0;
+            padding: 0;
+            counter-reset: step;
+        }
+
+            .progressbar li {
+                list-style-type: none;
+                width: 33%;
+                float: left;
+                font-size: 14px;
+                position: relative;
+                text-align: center;
+                text-transform: uppercase;
+                color: #7d7d7d;
+            }
+
+                .progressbar li:before {
+                    width: 70px;
+                    height: 40px;
+                    content: counter(step);
+                    counter-increment: step;
+                    line-height: 40px;
+                    border: 2px solid rgb(227, 235, 232);
+                    display: block;
+                    text-align: center;
+                    margin: 0 auto 10px auto;
+                    border-radius: 10%;
+                    background-color: white;
+                }
+
+                .progressbar li.active {
+                    color: green;
+                    border-color: #55b776;
+                }
+
+                .progressbar li.finish {
+                    color: #1e88e5;
+                }
+
+                .progressbar li.active:before {
+                    border-color: #55b776;
+                }
+
+        .step.finish::before {
+            border-color: #1e88e5;
+        }
+
+        .step.finish.active:before {
+            border-color: #55b776;
+        }
+
+        .step.finish.active {
+            color: #55b776;
+        }
+
+        .input.invalid {
+            background-color: #ffdddd;
+        }
+
+        @@media screen and (max-width: 600px) {
+            .hide_mob {
+                visibility: hidden;
+                display: none;
+            }
+        }
+    </style>
+
+    <style>
+        .error {
+            color: red;
+        }
+
+        .sidebar_menu_new > li > a {
+            padding: 8px;
+            font-size: 12px;
+            transition: 0.3s ease;
+            border-radius: 10px !important;
+        }
+
+        .media:hover {
+            transform: translateY(-10px);
+        }
+
+        .media {
+            transition: transform 250ms;
+        }
+
+        .f15 {
+            font-size: 14px !important;
+            color: #fff !important;
+        }
+
+        .body_new .sidebar_new a:hover {
+            text-decoration: none;
+            background: #ffffff3d !important;
+        }
+
+        .body_new .sidebar_new {
+            border-color: #1b2f45;
+        }
+
+        @@media (min-width: 768px) {
+            .sidebar_mini_new.sidebar-collapse .sidebar_menu_new > li > a:hover {
+                background: #051236 !important;
+            }
+
+            ul li .fa-circle-thin {
+                display: none;
+            }
+        }
+
+        .pb0 {
+            padding-bottom: 0px !important;
+        }
+
+        .pt0 {
+            padding-top: 0px !important;
+        }
+
+        .fcw {
+            color: #fff !important;
+        }
+
+
+        .feedback_comment {
+            float: left;
+            width: 100%;
+            height: 120px;
+        }
+
+        #feedback-btn {
+            padding: 0;
+        }
+
+        fieldset, label {
+            margin: 0;
+            padding: 0;
+        }
+
+        #intruction > a > #intruction-icon {
+            font-size: 2em;
+            margin: 2px;
+        }
+
+        #intruction {
+            position: fixed;
+            top: 35%;
+            right: -111px;
+            transition: 0.5s ease;
+        }
+
+        .body_new .sidebar_menu_new .treeview-menu > li > a {
+            margin: 3px 0px;
+            transition: 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .body_new .sidebar_menu_new > li.all_doc > .treeview-menu {
+            max-height: 300px;
+            overflow: scroll;
+            overflow-x: hidden;
+        }
+
+        @@media (max-width : 768px) {
+            #intruction {
+                top: 38.5%;
+            }
+        }
+
+        #intruction:hover {
+            right: 0;
+        }
+
+        #intruction > a {
+            border-radius: 10px;
+            color: #fff;
+        }
+
+            #intruction > a > span {
+                width: 100px;
+            }
+
+
+        .rating {
+            border: none;
+            float: left;
+        }
+
+            .rating > input[type="radio"] {
+                display: none !important;
+                position: absolute;
+                visibility: hidden;
+            }
+
+            .rating > label:before {
+                margin: 0px;
+                font-size: 2.25em;
+                font-family: FontAwesome;
+                content: "\f005";
+            }
+
+            .rating > label {
+                color: #ddd;
+                float: right;
+            }
+
+        #feedback-form [type=radio]:not(:checked) + label:after, #feedback-form [type=radio]:not(:checked) + label:before {
+            border: none;
+        }
+
+        #feedback-form [type=radio]:checked + label:after {
+            opacity: 0;
+        }
+
+        .rating > input:checked ~ label,
+        .rating:not(:checked) > label:hover,
+        .rating:not(:checked) > label:hover ~ label {
+            color: #FFD700;
+        }
+
+            .rating > input:checked + label:hover,
+            .rating > input:checked ~ label:hover,
+            .rating > label:hover ~ input:checked ~ label,
+            .rating > input:checked ~ label:hover ~ label {
+                color: #FFED85;
+            }
+
+        .main-header .navbar_new {
+            margin-left: 0px !important;
+        }
+
+        .body_new .main-header .navbar_new {
+            background: #051236;
+        }
+
+        .body_new sidebar_new {
+            border-color: #051236;
+        }
+
+        .header {
+            margin-bottom: 6vh;
+        }
+
+            .header .logo_new img {
+                width: 40px;
+                height: 45px;
+                margin-right: 10px;
+            }
+
+            .header .logo_new div h6, .logo_new p {
+                color: #c7a161;
+                padding: 0;
+                font-family: "Montserrat", sans-serif;
+                margin: 0;
+                letter-spacing: 0.1px;
+                text-transform: uppercase;
+                line-height: 1;
+                text-align: center;
+            }
+
+            .header .logo_new div {
+                background: linear-gradient(90deg, rgba(186,148,62,1) 0%, rgba(236,172,32,1) 20%, rgba(186,148,62,1) 39%, rgba(249,244,180,1) 50%, rgba(186,148,62,1) 60%, rgba(236,172,32,1) 80%, rgba(186,148,62,1) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-size: 200%;
+                animation: shine 5s infinite;
+                background-position: 200% 250%;
+            }
+
+        @@keyframes shine {
+            0% {
+                background-position: 100% 0;
+            }
+
+            100% {
+                background-position: -100% 0;
+            }
+        }
+
+        .header .logo_new div {
+        }
+
+            .header .logo_new div h6 {
+                font-weight: 900;
+                line-height: 1;
+                font-size: 14px;
+            }
+
+        .logo_new p {
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        .navbar_new {
+            flex-wrap: nowrap !important;
+        }
+
+            .navbar_new .image .image_user {
+                width: 50px;
+                height: 45px;
+                border-radius: 50%;
+                border: 1px solid #fff;
+                float: left;
+            }
+
+            .navbar_new .image h6 {
+                color: #fff;
+                margin-bottom: 0px;
+                margin-top: 1.5em;
+            }
+
+            .navbar_new .image p {
+                font-size: 11px;
+                color: #999;
+            }
+
+        .content_wrapper_new .content-header {
+            display: none;
+        }
+
+        @@media (max-width : 768px) {
+            .navbar_new .image .image_user {
+                width: 40px;
+                height: 35px;
+            }
+
+            #notif {
+                position: absolute;
+            }
+
+            a.logo_new {
+                display: flex;
+                justify-content: center;
+            }
+
+            a.user_info {
+                display: none;
+            }
+
+            .header .logo_new img {
+                width: 30px;
+                height: 35px;
+                margin-right: 10px;
+            }
+
+            .header .logo_new div h6 {
+                font-size: 12px;
+            }
+
+            .logo_new p {
+                font-size: 9px;
+            }
+
+            .content_wrapper_new .content-header {
+                display: block;
+            }
+        }
+
+        @@media (max-width : 567px) {
+            .navbar_new .image .image_user {
+                display: none;
+            }
+
+            .header .logo_new div h6 {
+                font-size: 10px;
+            }
+
+            .logo_new p {
+                font-size: 8px;
+            }
+
+            .image {
+                margin-left: 5px !important;
+            }
+
+            .navbar_custom_menu_new .navbar-nav > li:last-child > a {
+                padding: 0px 25px 0px 15px;
+            }
+        }
+
+        @@media (min-width: 768px) {
+            .sidebar_mini_new.sidebar-collapse .main-header .logo_new {
+                width: auto !important;
+                text-align: center;
+            }
+        }
+
+        .body_new .main-sidebar {
+            background-color: #051236 !important;
+        }
+
+        .body_new .sidebar_new {
+            border-color: #051236;
+        }
+
+        .body_new .sidebar_menu_new .treeview-menu > li > a {
+            margin: 3px 0px;
+            transition: 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .body_new .sidebar_menu_new > li > .treeview-menu {
+            background: #051236 !important;
+        }
+
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .sidebar_mini_new {
+            background: #ecedf0 !important
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .sidebar_mini_new .main-header {
+            margin-bottom: 6vh !important;
+        }
+
+        .sidebar_mini_new .navbar_new {
+            transition: all 0.5s;
+            z-index: 1000;
+        }
+
+            .sidebar_mini_new .navbar_new.sticked {
+                background: #051236);
+                padding: 5px 0px;
+            }
+
+        .sidebar_mini_new .mobile-language-btn {
+            background-color: transparent;
+        }
+
+        .sidebar_mini_new .tools {
+            position: fixed;
+            top: 65vh;
+            right: 0;
+            width: 80px;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+        }
+
+        @@media (max-width : 768px) {
+            .sidebar_mini_new .tools {
+                top: 60vh;
+            }
+        }
+
+        .tools .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-45deg);
+        }
+
+        .sidebar_mini_new .tools .nav-content .toggle-btn,
+        .sidebar_mini_new .tools .nav-content span a {
+            height: 60px;
+            width: 60px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .sidebar_mini_new .tools .nav-content .toggle-btn {
+            font-size: 35px;
+            color: #0e2431;
+            z-index: 100;
+            cursor: pointer;
+            transform: rotate(-225deg);
+            transition: all 0.6s ease;
+        }
+
+        .sidebar_mini_new .tools.open .toggle-btn {
+            transform: rotate(0deg);
+        }
+
+        .nav-content span {
+            position: absolute;
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .sidebar_mini_new .tools.open .nav-content span {
+            transform: rotate(calc(var(--i) * (360deg/6.7))) translateY(110px);
+            opacity: 1;
+            z-index: 9999999;
+        }
+
+        .sidebar_mini_new .tools .nav-content span a {
+            text-decoration: none;
+            transform: rotate(45deg);
+            cursor: pointer;
+        }
+
+            .sidebar_mini_new .tools .nav-content span a i {
+                font-size: 26px;
+                color: #0e2431;
+                transform: rotate(calc(var(--i) * (360deg/ -6.7)));
+                opacity: 0.8;
+                transition: 0.2s;
+            }
+
+            .sidebar_mini_new .tools .nav-content span a:hover i {
+                opacity: 1;
+            }
+
+                .sidebar_mini_new .tools .nav-content span a:hover i.fa-telegram {
+                    color: #0088cc;
+                }
+
+                .sidebar_mini_new .tools .nav-content span a:hover i.fa-star {
+                    color: gold;
+                }
+
+                .sidebar_mini_new .tools .nav-content span a:hover i.fa-cog {
+                    color: #008bad;
+                }
+
+                .sidebar_mini_new .tools .nav-content span a:hover i.fa-book {
+                    color: #0dd6f9;
+                }
+
+                .sidebar_mini_new .tools .nav-content span a:hover i.fa-home {
+                    color: orange;
+                }
+
+
+        .isSelected {
+            background-color: #c4f9d5;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .media {
+            padding: 1rem 0.25rem;
+        }
+
+        .total_new_msg {
+            background-color: red;
+            padding: 0px 6px;
+            display: block;
+            color: white;
+            border-radius: 6px;
+            text-align: center;
+            line-height: 25px;
+        }
+
+        .out_to_chat {
+            position: fixed;
+            text-align: center;
+            right: 2.875rem;
+            bottom: 6.5rem;
+            padding: 6px;
+            z-index: 100;
+            height: 50px;
+            min-width: 50px;
+        }
+
+        .rounded {
+            border-radius: 30px !important;
+        }
+
+        @@media (min-width: 768px) {
+            .sidebar_mini_new .sidebar-collapse .sidebar_menu_new li a:hover {
+                background: #051236 !important;
+            }
+        }
+
+        .skin-blue.sidebar-collapse .sidebar-menu > li:hover > a {
+            background-color: #051236 !important;
+        }
+    </style>
+
+    @RenderSection("styles", required: false)
+
+    <script type="text/javascript" language="javascript" src="~/js/jquery.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/jquery/dist/jquery.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/jquery-ui/jquery-ui.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/popper/dist/popper.min.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/chart.js-master/Chart.min.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/jquery-slimscroll/jquery.slimscroll.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/jquery-steps-master/build/jquery.steps.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/jquery-validation-1.17.0/dist/jquery.validate.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" language="javascript" src="~/js/jquery.dataTables.js" asp-append-version="true"></script>
+    <script type="text/javascript" language="javascript" src="~/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" language="javascript" src="~/js/jquery-ui-timepicker-addon.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" language="javascript" src="~/js/money_to_str.js" asp-append-version="true"></script>
+    <script src="~/assets/vendor_components/jquery-toast-plugin-master/dist/jquery.toast.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" language="javascript" src="~/js/select2.full.js" asp-append-version="true"></script>
+
+    <script src="~/assets/vendor_components/sweetalert/sweetalert.min.js" asp-append-version="true"></script>
+
+    <script type="text/javascript" language="javascript" src="~/js/template.js" asp-append-version="true"></script>
+
+    <script type="text/javascript" language="javascript" src="~/lib/microsoft/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
+
+    <script src="~/js/loaderIcon.js" asp-append-version="true"></script>
+
+    <script src="~/js/general.js" asp-append-version="true"></script>
+
+</head>
+
+<body class="hold-transition skin-blue body_new sidebar-mini sidebar_mini_new" id="bodyid">
+
+    <div class="wrapper">
+
+        <header class="main-header" style="background-color:#1a3a6c !important; text-align:center">
+
+            <a href="#" class="logo" style="background-color:#1a3a6c !important">
+                <b class="logo-mini" style="align-content:center"> &nbsp&nbsp&nbsp&nbsp @ViewBag.usertype_name</b>
+            </a>
+
+        </header>
+
+        <aside class="main-sidebar">
+            <section class="sidebar">
+
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li class="user-profile treeview" style="padding: 4px;">
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <img src="@ViewBag.iconPath" alt="user"
+                                 style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+                            <span style="font-size: 14px; color: white">@ViewBag.user_fio</span>
+                        </div>
+                        <ul class="treeview-menu">
+                            <li><a href="javascript:void()"><i class="fa fa-user mr-5"></i>Mening profilim </a></li>
+                            <li><a href="javascript:void()"><i class="fa fa-envelope-open mr-5"></i>Email</a></li>
+                            <li><a href="javascript:void()"><i class="fa fa-cog mr-5"></i>Profil sozlamalari</a></li>
+                            <li><a href="javascript:void()"><i class="fa fa-power-off mr-5"></i>Akkuntdan chiqish</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a asp-action="Index1">
+                            <i class="fa fa-home"></i> <span>Asosiy</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Users" asp-controller="Home">
+                            <i class="fa fa-users"></i> <span>Foydalanuvchilar</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="BlogApprove" asp-controller="Home">
+                            <i class="fa fa-edit"></i> <span>Bloglar</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="AllDocuments" asp-controller="Home">
+                            <i class="fa fa-folder-open"></i> <span>Fayllar</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Index" asp-controller="Home">
+                            <i class="fa fa-power-off"></i> <span>Chiqish</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+
+        <div class="content-wrapper">
+
+            <section class="content" style="padding: 15px;" id="pustoy">
+                @RenderBody()
+            </section>
+
+        </div>
+
+        <footer class="main-footer" id="footer">
+            <div class="pull-right d-none d-sm-inline-block">
+                <ul class="nav nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+            &copy; 2026-TDTrU diplom ishi Xayrullayev Xayotbek<span id="current-year"></span> <a href="#"></a>
+        </footer>
+
+        <aside class="control-sidebar control-sidebar-light" id="right">
+        </aside>
+        <div class="control-sidebar-bg"></div>
+
+    </div>
+
+    <style type="text/css">
+        .error {
+            color: red;
+        }
+    </style>
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

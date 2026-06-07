@@ -1,0 +1,162 @@
+﻿@model Blog
+
+@{
+    ViewData["Title"] = "Blog yaratish";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css">
+
+<style>
+    .create-card {
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+        .create-card:hover {
+            transform: translateY(-3px);
+        }
+    .create-header {
+        background: linear-gradient(135deg, #1a3a6c, #2196F3);
+        color: white;
+        padding: 15px 20px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 10px;
+        transition: 0.2s;
+    }
+
+        .form-control:focus {
+            border-color: #2196F3;
+            box-shadow: 0 0 8px rgba(33,150,243,0.2);
+        }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .btn-custom {
+        border-radius: 8px;
+        padding: 6px 15px;
+        transition: 0.3s;
+        font-weight: 500;
+    }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+        }
+
+    .alert {
+        border-radius: 10px;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container mt-4 fade-in">
+
+    @if (TempData["successMessage"] != null)
+    {
+        <div class="alert alert-success shadow-sm">
+            @TempData["successMessage"]
+        </div>
+    }
+
+    @if (TempData["errorMessage"] != null)
+    {
+        <div class="alert alert-danger shadow-sm">
+            @TempData["errorMessage"]
+        </div>
+    }
+
+    <div class="card create-card">
+
+        <div class="create-header">
+            <i class="fa fa-plus-circle"></i> Blog yaratish
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="CreateBlog" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label>Til</label>
+                    <select asp-for="LanguageType"
+                            class="form-control"
+                            asp-items="Html.GetEnumSelectList<LanguageType>()">
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Mavzu</label>
+                    <input asp-for="Title" class="form-control" placeholder="Mavzu kiriting..." />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label>Qisqa izoh</label>
+                    <input asp-for="Description" class="form-control" placeholder="Qisqa izoh..." />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label>Kontent</label>
+                    <textarea asp-for="Comment" id="editor" class="form-control"></textarea>
+                    <span asp-validation-for="Comment" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit" class="btn btn-success btn-custom">
+                        <i class="fa fa-save"></i> Saqlash
+                    </button>
+
+                    <a asp-action="ListBlog" class="btn btn-danger btn-custom">
+                        <i class="fa fa-arrow-left"></i> Orqaga
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#editor').summernote({
+            height: 250,
+            placeholder: "Blog kontentini yozing...",
+        });
+
+        // FIX: value yuborish
+        $('form').on('submit', function () {
+            $('#editor').val($('#editor').summernote('code'));
+        });
+    });
+</script>

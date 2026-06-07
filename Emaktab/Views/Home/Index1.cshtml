@@ -1,0 +1,122 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Admin panel";
+}
+
+<style>
+    .dashboard-card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: 0.3s;
+        background: white;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .icon-box {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-size: 28px;
+        color: white;
+    }
+
+    .bg-blue {
+        background: #0d6efd;
+    }
+
+    .bg-green {
+        background: #198754;
+    }
+
+    .bg-orange {
+        background: #ffc107;
+        color: #333;
+    }
+
+    .welcome-card {
+        border-radius: 15px;
+        background: linear-gradient(90deg,#0d6efd,#0dcaf0);
+        color: white;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="container-fluid">
+
+    <div class="welcome-card mb-4">
+        <h4>Xush kelibsiz, @ViewBag.user_fio 👋</h4>
+        <p class="mb-1"><strong>Foydalanuvchi turi:</strong> @ViewBag.usertype_name</p>
+        <p class="mb-0"><strong>Login:</strong> @Context.Session.GetString("UserLogin")</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-xl-4 col-md-6 col-12">
+            <div class="dashboard-card p-4 text-center">
+
+                <div class="icon-box bg-blue">
+                    <i class="fa fa-users"></i>
+                </div>
+
+                <h5>Foydalanuvchilar</h5>
+                <p class="text-muted">Tizimdagi barcha foydalanuvchilarni boshqarish</p>
+
+                <a asp-action="Users" asp-controller="Home"
+                   class="btn btn-primary btn-sm">
+                    Ko‘rish
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6 col-12">
+            <div class="dashboard-card p-4 text-center">
+
+                <div class="icon-box bg-green">
+                    <i class="fa fa-check-circle"></i>
+                </div>
+
+                <h5>Bloglarni tekshirish</h5>
+                <p class="text-muted">Pedagog bloglarini tasdiqlash yoki rad etish</p>
+
+                <a asp-action="BlogApprove" asp-controller="Home"
+                   class="btn btn-success btn-sm">
+                    Tekshirish
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6 col-12">
+            <div class="dashboard-card p-4 text-center">
+
+                <div class="icon-box bg-orange">
+                    <i class="fa fa-file"></i>
+                </div>
+
+                <h5>Fayllarni tekshirish</h5>
+                <p class="text-muted">KPI fayllarni ko‘rib chiqish</p>
+
+                <a asp-action="AllDocuments" asp-controller="Home"
+                   class="btn btn-warning btn-sm">
+                    Ko‘rish
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

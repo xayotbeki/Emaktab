@@ -1,0 +1,182 @@
+﻿@model Document100
+
+@{
+    ViewBag.Title = "Hujjat Tafsilotlari";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .details-card {
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 30px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        border: none;
+    }
+
+    .page-title {
+        font-weight: 600;
+        color: #1a3a6c;
+    }
+
+    .info-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        background: #f8fafc;
+        transition: 0.3s;
+    }
+
+        .info-section:hover {
+            background: #eef4ff;
+        }
+
+    .info-label {
+        font-size: 13px;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #212529;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .status-saqlangan {
+        background-color: #e3f2fd;
+        color: #0d6efd;
+    }
+
+    .status-yuborilgan {
+        background-color: #e8f5e9;
+        color: #28a745;
+    }
+
+    .status-qabul {
+        background-color: #d1f7e3;
+        color: #198754;
+    }
+
+    .status-unknown {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .file-link {
+        text-decoration: none;
+        font-weight: 500;
+        color: #0d6efd;
+    }
+
+        .file-link:hover {
+            text-decoration: underline;
+        }
+
+    .back-btn {
+        border-radius: 8px;
+        padding: 6px 15px;
+    }
+</style>
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="page-title">📄 Hujjat tafsilotlari</h4>
+
+        <a asp-action="ImportDocPed" class="btn btn-outline-primary back-btn">
+            ← Orqaga
+        </a>
+    </div>
+
+    <div class="details-card">
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <div class="info-section">
+                    <div class="info-label">№</div>
+                    <div class="info-value">@Model.Id</div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-section">
+                    <div class="info-label">Izoh</div>
+                    <div class="info-value">@Model.Comment</div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-section">
+                    <div class="info-label">Ball</div>
+                    <div class="info-value">@Model.Score</div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-section">
+                    <div class="info-label">Yaratilgan sana</div>
+                    <div class="info-value">
+                        @Model.upload_date.ToString("dd.MM.yyyy")
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-section">
+                    <div class="info-label">Holati</div>
+                    <div class="info-value">
+                        @if (Model.status_id == (int)DocStatus.Saqlangan)
+                        {
+                            <span class="status-badge status-saqlangan">Saqlangan</span>
+                        }
+                        else if (Model.status_id == (int)DocStatus.Yuborilgan)
+                        {
+                            <span class="status-badge status-yuborilgan">Yuborilgan</span>
+                        }
+                        else if (Model.status_id == (int)DocStatus.QabulQilindi)
+                        {
+                            <span class="status-badge status-qabul">Qabul qilindi</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-unknown">Noma'lum</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-section">
+                    <div class="info-label">Yuklangan fayl</div>
+                    <div class="info-value">
+                        @if (!string.IsNullOrEmpty(Model.FilePath))
+                        {
+                            <a href="@Url.Content(Model.FilePath)" target="_blank" class="file-link">
+                                📥 Yuklab olish
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Fayl mavjud emas</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
