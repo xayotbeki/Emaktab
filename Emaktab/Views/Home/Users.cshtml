@@ -94,7 +94,7 @@
 
                                     <td>
                                         <div class="user-avatar">
-                                            @user.user_fio.Substring(0, 1)
+                                            @(user?.user_fio?[0].ToString() ?? "")
                                         </div>
                                     </td>
 
